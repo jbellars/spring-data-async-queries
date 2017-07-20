@@ -31,9 +31,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableJpaRepositories(basePackages = {"com.infiniteskills.springdata.async"},
                        repositoryBaseClass = com.infiniteskills.springdata.async.data.repository.ExtendedRepositoryImpl.class)
 @EnableJpaAuditing(auditorAwareRef = "customAuditorAware")
-@EnableAsync
 @EnableTransactionManagement
 @ComponentScan("com.infiniteskills.springdata.async")
+@EnableAsync
 @Configuration
 public class DataConfiguration implements AsyncConfigurer
 {
@@ -73,29 +73,32 @@ public class DataConfiguration implements AsyncConfigurer
         return entityManagerFactoryBean.getObject();
     }
 
-    @Bean
+    //@Async
+    @Bean(name = "transactionManager")
     public PlatformTransactionManager transactionManager() {
         JpaTransactionManager txManager = new JpaTransactionManager();
         txManager.setEntityManagerFactory(entityManagerFactory());
         return txManager;
     }
 
+    /*@Async
+    @Bean(name = "executor")*/
     @Override
-    @Bean(destroyMethod = "shutdown", name = "executor")
     public Executor getAsyncExecutor()
     {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(10);
         executor.setMaxPoolSize(10);
         executor.setQueueCapacity(100);
-        executor.setThreadNamePrefix("executor-");
+        executor.setThreadNamePrefix("MyExecutor-");
         executor.initialize();
         return executor;
     }
 
 
+    /*@Async
+    @Bean*/
     @Override
-    @Bean
     public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler()
     {
         return new SimpleAsyncUncaughtExceptionHandler();
