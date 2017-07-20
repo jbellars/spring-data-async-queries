@@ -1,0 +1,27 @@
+# Maven stuff
+target/
+
+# Eclipse stuff
+.classpath
+.project
+.settings/
+
+# IntelliJ stuff
+.idea/
+.iml/
+*.iml
+
+# Application output
+logs/
+*.csv
+
+*.DS_STORE
+
+# Programmer specific configuration
+/Biovigilant-Home/properties/
+
+#Properties configuration for local development
+/Biovigilant-Home/config/*
+!/Biovigilant-Home/config/Air
+!/Biovigilant-Home/config/Water
+
