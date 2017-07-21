@@ -1,7 +1,9 @@
 ## spring-data-java-config
 
-Base project for Spring Data applications using java configuration highlighting the Async Queries portion of an InfiniteSkills course by Kevin Bowersox
+Base project for Spring Data applications using java configuration rather than the xml configuration used in the InfiniteSkills course by Kevin Bowersox at <a href="https://www.safaribooksonline.com/library/view/spring-data-for/9781771375924/">https://www.safaribooksonline.com/library/view/spring-data-for/9781771375924/</a> 
 
-After going through Kevin Bowersox's Infinite Skills course on Spring Data for Java Developers, the only part the that didn't seem to work as advertised were the Async methods. Mind you at the beginning of the course he covered xml and Java configuration, but he proceeded to use the xml configuration throughout the rest of the course, whereas, I kept using Java configuration for each of the exercises and was able to get all the other parts to work. One minor difference is I am using IntelliJ IDEA rather than STS, as he uses throughout the course.
+**NOTE:** If you find yourself going through Kevin Bowersox's Infinite Skills course on Spring Data for Java Developers, and you have trouble with the Async methods, make sure you remove the try-with-resources syntax around your ApplicationContext, even if your IDE suggests it is a good idea to prevent possible leaks. **It will cause your context to be destroyed before your asynch queries can be executed/completed.**
 
-If anyone familiar with Spring Data Async Queries or the segment of his course (https://www.safaribooksonline.com/library/view/spring-data-for/9781771375924/video241705.html) has some insight into what might be missing, please let me know.
+
+
+
