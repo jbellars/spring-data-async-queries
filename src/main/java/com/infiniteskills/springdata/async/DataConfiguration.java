@@ -12,30 +12,25 @@ import org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * This defines the Beans for our Project
  */
 @EnableJpaRepositories(basePackages = {"com.infiniteskills.springdata.async"},
                        repositoryBaseClass = com.infiniteskills.springdata.async.data.repository.ExtendedRepositoryImpl.class)
-@EnableJpaAuditing(auditorAwareRef = "customAuditorAware")
-@EnableTransactionManagement
 @ComponentScan("com.infiniteskills.springdata.async")
 @EnableAsync
 @Configuration
-public class DataConfiguration implements AsyncConfigurer
+public class DataConfiguration //implements AsyncConfigurer
 {
     @Bean
     public CustomAuditorAware customAuditorAware()
@@ -58,6 +53,7 @@ public class DataConfiguration implements AsyncConfigurer
         Properties jpaProperties = new Properties();
         jpaProperties.put("hibernate.hbm2ddl.auto", "create-drop");
         jpaProperties.put("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
+        jpaProperties.put("hibernate.show_sql", "true");
         jpaProperties.put("hibernate.connection.driver_class", "org.h2.Driver");
 
         // After DDL has been run, run init script to populate table with data.
@@ -73,17 +69,14 @@ public class DataConfiguration implements AsyncConfigurer
         return entityManagerFactoryBean.getObject();
     }
 
-    //@Async
-    @Bean(name = "transactionManager")
+    @Bean
     public PlatformTransactionManager transactionManager() {
         JpaTransactionManager txManager = new JpaTransactionManager();
         txManager.setEntityManagerFactory(entityManagerFactory());
         return txManager;
     }
 
-    /*@Async
-    @Bean(name = "executor")*/
-    @Override
+    @Bean(name = "MyExecutor")
     public Executor getAsyncExecutor()
     {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
@@ -95,10 +88,7 @@ public class DataConfiguration implements AsyncConfigurer
         return executor;
     }
 
-
-    /*@Async
-    @Bean*/
-    @Override
+    @Bean
     public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler()
     {
         return new SimpleAsyncUncaughtExceptionHandler();
