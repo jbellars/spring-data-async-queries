@@ -15,7 +15,7 @@
         <java.version>1.8</java.version>
 
         <!-- H2 driver version (used for JUnit testing -->
-        <h2.version>1.4.196</h2.version>
+        <h2.version>2.1.210</h2.version>
 
         <!-- ORM stuff -->
         <hibernate.version>5.2.10.Final</hibernate.version>
